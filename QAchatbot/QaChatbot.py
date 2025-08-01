@@ -104,3 +104,16 @@ else:
             except Exception as e:
                 st.error("Error occurred while generating response.")
                 st.exception(e)
+
+
+#examples
+st.markdown("### Example Questions")
+st.markdown("""- What is the capital of France?
+- Explain the theory of relativity. 
+- What is the largest planet in our solar system?
+- How many planets are there in our solar system?
+- What is the largest animal on Earth?""")
+# Footer
+st.markdown("---")  
+st.markdown("### Powered by [Langchain](https://langchain.com/) and [Anthropic](https://www.anthropic.com/)")   
+
