@@ -2,3 +2,4 @@ langchain
 langgraph
 ipykernel
 langchain-anthropic
+streamlit
