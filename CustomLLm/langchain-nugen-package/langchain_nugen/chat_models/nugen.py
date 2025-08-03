@@ -14,7 +14,7 @@ from langchain_core.messages import (
     SystemMessage,
 )
 from langchain_core.outputs import ChatGeneration, ChatGenerationChunk, ChatResult
-from langchain_core.pydantic_v1 import Field, SecretStr, root_validator
+from pydantic import Field, SecretStr, model_validator
 from langchain_core.utils import get_from_dict_or_env
 
 
@@ -40,19 +40,20 @@ class ChatNugen(BaseChatModel):
     # Required fields
     api_key: SecretStr = Field(description="Nugen.in API Key")
     model_name: str = Field(default="nugen-flash-instruct", description="Model name")
-    base_url: str = Field(default="https://api.dev-nugen.in", description="API base URL")
+    base_url: str = Field(default="https://api.nugen.in", description="API base URL")
     
     # Optional parameters
     temperature: float = Field(default=0.7, ge=0.0, le=2.0, description="Temperature for randomness")
     max_tokens: int = Field(default=1000, gt=0, description="Maximum tokens to generate")
     top_p: float = Field(default=1.0, ge=0.0, le=1.0, description="Top-p sampling parameter")
     
-    class Config:
-        """Configuration for this pydantic object."""
-        extra = "forbid"
-        arbitrary_types_allowed = True
+    model_config = {
+        "extra": "forbid",
+        "arbitrary_types_allowed": True
+    }
         
-    @root_validator()
+    @model_validator(mode='before')
+    @classmethod
     def validate_environment(cls, values: Dict) -> Dict:
         """Validate environment variables and configuration."""
         api_key = get_from_dict_or_env(
